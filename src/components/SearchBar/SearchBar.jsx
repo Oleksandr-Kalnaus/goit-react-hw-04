@@ -1,18 +1,22 @@
-import PropTypes from "prop-types";
 import css from "./SearchBar.module.css";
 
 const SearchBar = () => {
   return (
-    <div>
-      <label htmlFor="search">Find contacts by name</label>
-      <input type="text" name="search" id="search" placeholder="Search image" />
-    </div>
+    <header className={css.header}>
+      <form className={css.searchForm}>
+        <input
+          className={css.input}
+          type="text"
+          autocomplete="off"
+          autofocus
+          placeholder="Search images and photos"
+        />
+        <button className={css.searchBtn} type="submit">
+          Search
+        </button>
+      </form>
+    </header>
   );
-};
-
-SearchBox.propTypes = {
-  searchValue: PropTypes.string.isRequired,
-  handleSearchChange: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
