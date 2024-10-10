@@ -2,21 +2,16 @@ import PropTypes from "prop-types";
 import css from "./ImageCard.module.css";
 
 const ImageCard = ({ imageCard, onImageClick }) => {
-  const { description, smallImage, regularImage, likes, dateOfCreate } =
+  const { smallImage, regularImage, description, likes, dateOfCreate } =
     imageCard;
 
   const handleClick = () => {
-    onImageClick(regularImage);
+    onImageClick({ regularImage, description, likes, dateOfCreate });
   };
 
   return (
     <div className={css.imageCard} onClick={handleClick}>
       <img src={smallImage} alt={description} className={css.image} />
-      <div className={css.imageDescr}>
-        <p className={css.imageNamed}>{description}</p>
-        <p className={css.imageLikes}>Likes: {likes}</p>
-        <p className={css.imageDateOfCreate}>Date: {dateOfCreate}</p>
-      </div>
     </div>
   );
 };

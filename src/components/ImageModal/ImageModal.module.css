@@ -13,9 +13,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
+  background-color: #5f82b4;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 16px;
   max-width: 90%;
   max-height: 90%;
   z-index: 1001;
@@ -31,5 +32,22 @@
 .image {
   max-width: 100%;
   max-height: 80vh;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+.imageDetails {
+  display: flex;
+  gap: 8px;
+}
+.imageNamed {
+  color: #9fd75b;
+  margin: 0 auto;
+}
+.imageLikes {
+  color: #9fd75b;
+  margin: 0 auto;
+}
+.imageDateOfCreate {
+  color: #9fd75b;
+  margin: 0 auto;
 }

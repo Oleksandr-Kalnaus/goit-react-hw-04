@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
 }
 .galleryItem {
+  list-style: none;
   width: 350px;
   height: 200px;
 }

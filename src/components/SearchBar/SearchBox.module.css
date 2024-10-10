@@ -45,7 +45,17 @@
 }
 
 .searchBar:hover .input,
-.searchBar:focus .input {
+.searchBar:focus .input,
+.searchBar:active .input {
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+}
+.searchBar:focus-within .form {
+  width: 300px;
+}
+
+.searchBar:focus-within .input {
   width: 100%;
   opacity: 1;
   visibility: visible;

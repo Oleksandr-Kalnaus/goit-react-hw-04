@@ -4,7 +4,15 @@ import css from "./ImageModal.module.css";
 
 Modal.setAppElement("#root");
 
-const ImageModal = ({ isOpen, onClose, imageUrl, altText }) => {
+const ImageModal = ({
+  isOpen,
+  onClose,
+  imageUrl,
+  altText,
+  description,
+  likes,
+  dateOfCreate,
+}) => {
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -34,6 +42,11 @@ const ImageModal = ({ isOpen, onClose, imageUrl, altText }) => {
     >
       <div className={css.content}>
         <img src={imageUrl} alt={altText} className={css.image} />
+        <div className={css.imageDetails}>
+          <p className={css.imageNamed}>Description: {description}</p>
+          <p className={css.imageLikes}>Likes: {likes}</p>
+          <p className={css.imageDateOfCreate}>When: {dateOfCreate}</p>
+        </div>
       </div>
     </Modal>
   );

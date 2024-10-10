@@ -55,8 +55,8 @@ export default function App() {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (imageUrl) => {
-    setSelectedImage(imageUrl);
+  const openModal = (imageData) => {
+    setSelectedImage(imageData);
     setIsModalOpen(true);
   };
 
@@ -85,8 +85,11 @@ export default function App() {
         <ImageModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          imageUrl={selectedImage}
+          imageUrl={selectedImage.regularImage}
           altText="Selected large image"
+          description={selectedImage.description}
+          likes={selectedImage.likes}
+          dateOfCreate={selectedImage.dateOfCreate}
         />
       )}
     </>
