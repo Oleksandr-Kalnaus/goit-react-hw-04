@@ -1,30 +1,94 @@
+import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Loader from "./Loader/Loader";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import ImageModal from "./ImageModal/ImageModal";
+import apiRequests from "../utils/apiRequests";
 
-import axios from "axios";
 import "modern-normalize";
-import { ErrorMessage } from "formik";
 
 export default function App() {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const onSubmit = (searchQuery) => {
+    if (searchQuery === query) return;
+    setQuery(searchQuery);
+    setPage(1);
+    setImages([]);
+    setError(null);
+  };
+
+  useEffect(() => {
+    if (query === "") return;
+
+    const fetchImages = async () => {
+      setLoading(true);
+
+      try {
+        const { images: fetchedImages } = await apiRequests(query, page);
+
+        if (fetchedImages.length === 0) {
+          setError("No images found.");
+          return;
+        }
+
+        setImages((prevImages) => [...prevImages, ...fetchedImages]);
+      } catch (err) {
+        setError("Failed to fetch images.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, [query, page]);
+
+  const loadMoreImages = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      <div>
-        <SearchBar />
+      <SearchBar onSubmit={onSubmit} />
 
-        <ImageGallery />
+      {error && <ErrorMessage message={error} />}
 
-        <Loader />
+      {images.length > 0 && (
+        <ImageGallery imageCards={images} onImageClick={openModal} />
+      )}
 
-        <LoadMoreBtn />
+      {loading && <Loader />}
 
-        <ErrorMessage />
+      {images.length > 0 && !loading && (
+        <LoadMoreBtn onClick={loadMoreImages} />
+      )}
 
-        <ImageModal />
-      </div>
+      {isModalOpen && selectedImage && (
+        <ImageModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          imageUrl={selectedImage}
+          altText="Selected large image"
+        />
+      )}
     </>
   );
 }
