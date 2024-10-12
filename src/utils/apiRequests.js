@@ -3,7 +3,7 @@ import { formatDateToNow } from "../utils/formatDateToNow";
 
 const API_KEY = "5lHJ2OqWLWMw0_gWg9zCraP9kyB_obaX4JZ46iTNsW8";
 
-const ApiRequests = async (query, page) => {
+const apiRequests = async (query, page) => {
   const perPage = 12;
 
   try {
@@ -25,11 +25,11 @@ const ApiRequests = async (query, page) => {
       likes: image.likes,
       dateOfCreate: formatDateToNow(image.created_at),
     }));
-
-    return { images };
+    const total = response.data.total;
+    return { images, total };
   } catch (error) {
     throw error;
   }
 };
 
-export default ApiRequests;
+export default apiRequests;

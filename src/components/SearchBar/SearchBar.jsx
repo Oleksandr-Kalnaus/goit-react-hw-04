@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import { TbCameraSearch } from "react-icons/tb";
 import css from "./SearchBox.module.css";

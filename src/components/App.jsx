@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Loader from "./Loader/Loader";
@@ -17,6 +17,8 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [totalImages, setTotalImages] = useState(0);
+  const imageCardRef = useRef(null);
 
   const onSubmit = (searchQuery) => {
     if (searchQuery === query) return;
@@ -33,7 +35,7 @@ export default function App() {
       setLoading(true);
 
       try {
-        const { images: fetchedImages } = await apiRequests(query, page);
+        const { images: fetchedImages, total } = await apiRequests(query, page);
 
         if (fetchedImages.length === 0) {
           setError("No images found.");
@@ -41,8 +43,9 @@ export default function App() {
         }
 
         setImages((prevImages) => [...prevImages, ...fetchedImages]);
+        setTotalImages(total);
       } catch (err) {
-        setError("Failed to fetch images.");
+        setError(`Failed to fetch images. Error: ${err.message}`);
       } finally {
         setLoading(false);
       }
@@ -51,7 +54,20 @@ export default function App() {
     fetchImages();
   }, [query, page]);
 
+  useEffect(() => {
+    if (imageCardRef.current) {
+      const cardHeight = imageCardRef.current.clientHeight || 0;
+      const scrollPosition = window.pageYOffset + cardHeight * 3;
+
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
+      });
+    }
+  }, [images]);
+
   const loadMoreImages = () => {
+    if (images.length >= totalImages) return;
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -72,12 +88,16 @@ export default function App() {
       {error && <ErrorMessage message={error} />}
 
       {images.length > 0 && (
-        <ImageGallery imageCards={images} onImageClick={openModal} />
+        <ImageGallery
+          imageCards={images}
+          onImageClick={openModal}
+          cardRef={imageCardRef}
+        />
       )}
 
       {loading && <Loader />}
 
-      {images.length > 0 && !loading && (
+      {images.length > 0 && !loading && images.length < totalImages && (
         <LoadMoreBtn onClick={loadMoreImages} />
       )}
 

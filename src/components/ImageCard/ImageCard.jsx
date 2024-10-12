@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import css from "./ImageCard.module.css";
 
-const ImageCard = ({ imageCard, onImageClick }) => {
+const ImageCard = ({ imageCard, onImageClick, cardRef }) => {
   const { smallImage, regularImage, description, likes, dateOfCreate } =
     imageCard;
 
@@ -10,7 +10,7 @@ const ImageCard = ({ imageCard, onImageClick }) => {
   };
 
   return (
-    <div className={css.imageCard} onClick={handleClick}>
+    <div className={css.imageCard} onClick={handleClick} ref={cardRef}>
       <img src={smallImage} alt={description} className={css.image} />
     </div>
   );
@@ -25,6 +25,7 @@ ImageCard.propTypes = {
     dateOfCreate: PropTypes.string.isRequired,
   }).isRequired,
   onImageClick: PropTypes.func.isRequired,
+  cardRef: PropTypes.object,
 };
 
 export default ImageCard;
